@@ -19,13 +19,25 @@ body {
 
 .app-header {
   margin-bottom: 32px;
+  text-align: center;
 }
 
 .header-row {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: space-between;
-  gap: 16px;
+  gap: 12px;
+}
+
+.header-top {
+  width: 100%;
+  text-align: center;
+}
+
+.header-actions {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
 }
 
 .app-header h1 {
@@ -243,11 +255,24 @@ body {
 
 .modal-header {
   display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 20px 20px 16px;
+  flex-direction: column;
+  padding: 16px 20px;
   border-bottom: 1px solid #333;
   flex-shrink: 0;
+  gap: 14px;
+}
+
+.modal-header-actions {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 8px;
+}
+
+.modal-header-identity {
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
 
 .avatar.large {
@@ -370,9 +395,15 @@ body {
 
 .add-meeting {
   display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+.add-meeting-row {
+  display: flex;
   gap: 8px;
   align-items: center;
-  margin-bottom: 4px;
 }
 
 .edit-input {
@@ -391,8 +422,7 @@ body {
 }
 
 .date-input {
-  width: 140px;
-  flex-shrink: 0;
+  width: 100%;
   color-scheme: dark;
 }
 
@@ -431,10 +461,20 @@ body {
 
 .edit-meeting-fields {
   display: flex;
-  gap: 8px;
-  align-items: center;
+  flex-direction: column;
+  gap: 6px;
   flex: 1;
   padding-bottom: 12px;
+}
+
+.edit-meeting-fields .date-input {
+  width: 100%;
+}
+
+.edit-meeting-inline {
+  display: flex;
+  gap: 8px;
+  align-items: center;
 }
 
 .delete-btn {

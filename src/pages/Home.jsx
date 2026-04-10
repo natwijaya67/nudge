@@ -22,11 +22,13 @@ export default function Home() {
     <div className="app">
       <header className="app-header">
         <div className="header-row">
-          <div>
+          <div className="header-top">
             <h1>Nudge</h1>
             <p>Sorted by who you haven't seen in a while</p>
           </div>
-          <button className="add-friend-btn" onClick={() => setShowAdd(true)}>+ Add</button>
+          <div className="header-actions">
+            <button className="add-friend-btn" onClick={() => setShowAdd(true)}>+ Add</button>
+          </div>
         </div>
       </header>
       <div className="card-list">

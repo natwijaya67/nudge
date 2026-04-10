@@ -88,40 +88,44 @@ export default function FriendModal({ friend, onClose, onSave, onDelete }) {
       <div className={`modal ${status}`} onClick={(e) => e.stopPropagation()}>
 
         <div className="modal-header">
-          <div className="avatar large">{avatarLetter}</div>
-          <div className="card-header-info">
+          <div className="modal-header-actions">
             {isEditing ? (
-              <input
-                className="edit-name-input"
-                value={draft.name}
-                onChange={e => setDraft(prev => ({ ...prev, name: e.target.value }))}
-                placeholder="Friend's name"
-                autoFocus={isNew}
-              />
+              <>
+                <button className="cancel-btn" onClick={onClose}>Cancel</button>
+                <button className="save-btn" onClick={saveEdit} disabled={!draft.name.trim()}>
+                  {isNew ? 'Add friend' : 'Save'}
+                </button>
+              </>
             ) : (
-              <h2 className="friend-name">{friend.name}</h2>
-            )}
-            {!isNew && (
-              <span className="last-seen">
-                {hasMeetings
-                  ? `Last seen ${days === 0 ? 'today' : `${days}d ago`} — ${formatDate(last.date)}`
-                  : 'No meetups yet'}
-              </span>
+              <>
+                <button className="edit-btn" onClick={startEdit}>Edit</button>
+                <button className="close-btn" onClick={onClose}>✕</button>
+              </>
             )}
           </div>
-          {isEditing ? (
-            <div className="edit-actions">
-              <button className="save-btn" onClick={saveEdit} disabled={!draft.name.trim()}>
-                {isNew ? 'Add friend' : 'Save'}
-              </button>
-              <button className="cancel-btn" onClick={onClose}>Cancel</button>
+          <div className="modal-header-identity">
+            <div className="avatar large">{avatarLetter}</div>
+            <div className="card-header-info">
+              {isEditing ? (
+                <input
+                  className="edit-name-input"
+                  value={draft.name}
+                  onChange={e => setDraft(prev => ({ ...prev, name: e.target.value }))}
+                  placeholder="Friend's name"
+                  autoFocus={isNew}
+                />
+              ) : (
+                <h2 className="friend-name">{friend.name}</h2>
+              )}
+              {!isNew && (
+                <span className="last-seen">
+                  {hasMeetings
+                    ? `Last seen ${days === 0 ? 'today' : `${days}d ago`} — ${formatDate(last.date)}`
+                    : 'No meetups yet'}
+                </span>
+              )}
             </div>
-          ) : (
-            <div className="edit-actions">
-              <button className="edit-btn" onClick={startEdit}>Edit</button>
-              <button className="close-btn" onClick={onClose}>✕</button>
-            </div>
-          )}
+          </div>
         </div>
 
         <div className="modal-body">
@@ -134,20 +138,23 @@ export default function FriendModal({ friend, onClose, onSave, onDelete }) {
                   className="edit-input date-input"
                   value={draft.newDate}
                   onChange={e => setDraft(prev => ({ ...prev, newDate: e.target.value }))}
+                  placeholder="Date"
                 />
-                <input
-                  type="text"
-                  className="edit-input note-input"
-                  placeholder="What did you do?"
-                  value={draft.newNote}
-                  onChange={e => setDraft(prev => ({ ...prev, newNote: e.target.value }))}
-                  onKeyDown={e => { if (e.key === 'Enter') addMeeting() }}
-                />
-                <button
-                  className="add-btn"
-                  onClick={addMeeting}
-                  disabled={!draft.newDate || !draft.newNote.trim()}
-                >+</button>
+                <div className="add-meeting-row">
+                  <input
+                    type="text"
+                    className="edit-input note-input"
+                    placeholder="What did you do?"
+                    value={draft.newNote}
+                    onChange={e => setDraft(prev => ({ ...prev, newNote: e.target.value }))}
+                    onKeyDown={e => { if (e.key === 'Enter') addMeeting() }}
+                  />
+                  <button
+                    className="add-btn"
+                    onClick={addMeeting}
+                    disabled={!draft.newDate || !draft.newNote.trim()}
+                  >+</button>
+                </div>
               </div>
 
               {draft.meetings.length > 0 && (
@@ -167,21 +174,23 @@ export default function FriendModal({ friend, onClose, onSave, onDelete }) {
                             value={m.date}
                             onChange={e => updateMeeting(i, 'date', e.target.value)}
                           />
-                          <input
-                            type="text"
-                            className="edit-input note-input"
-                            value={m.note}
-                            onChange={e => updateMeeting(i, 'note', e.target.value)}
-                          />
-                          <button
-                            className={`reaction-btn up ${m.reaction === 'up' ? 'active' : ''}`}
-                            onClick={() => updateMeeting(i, 'reaction', m.reaction === 'up' ? null : 'up')}
-                          >▲</button>
-                          <button
-                            className={`reaction-btn down ${m.reaction === 'down' ? 'active' : ''}`}
-                            onClick={() => updateMeeting(i, 'reaction', m.reaction === 'down' ? null : 'down')}
-                          >▼</button>
-                          <button className="delete-btn" onClick={() => deleteMeeting(i)}>✕</button>
+                          <div className="edit-meeting-inline">
+                            <input
+                              type="text"
+                              className="edit-input note-input"
+                              value={m.note}
+                              onChange={e => updateMeeting(i, 'note', e.target.value)}
+                            />
+                            <button
+                              className={`reaction-btn up ${m.reaction === 'up' ? 'active' : ''}`}
+                              onClick={() => updateMeeting(i, 'reaction', m.reaction === 'up' ? null : 'up')}
+                            >▲</button>
+                            <button
+                              className={`reaction-btn down ${m.reaction === 'down' ? 'active' : ''}`}
+                              onClick={() => updateMeeting(i, 'reaction', m.reaction === 'down' ? null : 'down')}
+                            >▼</button>
+                            <button className="delete-btn" onClick={() => deleteMeeting(i)}>✕</button>
+                          </div>
                         </div>
                       </div>
                     ))}
