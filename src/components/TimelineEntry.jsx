@@ -14,7 +14,9 @@ export default function TimelineEntry({ meeting, isLast, onReact }) {
         {!isLast && <div className="line" />}
       </div>
       <div className="timeline-content">
-        <span className="meeting-date">{formatDate(meeting.date)}</span>
+        <div className="timeline-date-row">
+          <span className="meeting-date">{formatDate(meeting.date)}</span>
+        </div>
         <div className="note-row">
           <span className="meeting-note">{meeting.note}</span>
           <div className="reactions">
