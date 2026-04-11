@@ -1,5 +1,7 @@
 export function daysSince(dateStr) {
-  const diff = Date.now() - new Date(dateStr).getTime()
+  const [year, month, day] = dateStr.split('-').map(Number)
+  const local = new Date(year, month - 1, day)
+  const diff = Date.now() - local.getTime()
   return Math.floor(diff / (1000 * 60 * 60 * 24))
 }
 
