@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { daysSince, formatDate, staleness } from '../utils/dateUtils'
+import { daysSince, formatDate, staleness, daysLabel } from '../utils/dateUtils'
 import TimelineEntry from './TimelineEntry'
 
 const EMPTY_DRAFT = { name: '', meetings: [], newDate: '', newNote: '' }
@@ -13,11 +13,18 @@ export default function FriendModal({ friend, onClose, onSave, onDelete }) {
     isNew ? EMPTY_DRAFT : { name: friend.name, meetings: [...friend.meetings], newDate: '', newNote: '' }
   )
 
-  const sorted = isNew ? [] : [...friend.meetings].sort((a, b) => new Date(b.date) - new Date(a.date))
-  const last = sorted[0]
-  const hasMeetings = !!last
-  const days = hasMeetings ? daysSince(last.date) : null
+  // All sorted newest first: future (furthest→soonest), then past (most recent→oldest)
+  const futureMeetings = isNew ? [] : friend.meetings.filter(m => daysSince(m.date) < 0).sort((a, b) => new Date(b.date) - new Date(a.date))
+  const pastMeetings = isNew ? [] : friend.meetings.filter(m => daysSince(m.date) >= 0).sort((a, b) => new Date(b.date) - new Date(a.date))
+  const sorted = [...futureMeetings, ...pastMeetings]
+
+  const upcoming = futureMeetings[0] ?? null
+  const lastPast = pastMeetings[0] ?? null
+  const featured = upcoming ?? lastPast
+  const hasMeetings = !!featured
+  const days = hasMeetings ? daysSince(featured.date) : null
   const status = hasMeetings ? staleness(days) : 'overdue'
+  const isUpcoming = !!upcoming
 
   useEffect(() => {
     const onKey = (e) => {
@@ -52,9 +59,7 @@ export default function FriendModal({ friend, onClose, onSave, onDelete }) {
   }
 
   function handleReact(index, value) {
-    const meetings = sorted.map((m, i) =>
-      i === index ? { ...m, reaction: value } : m
-    )
+    const meetings = sorted.map((m, i) => i === index ? { ...m, reaction: value } : m)
     onSave({ ...friend, meetings })
   }
 
@@ -119,9 +124,9 @@ export default function FriendModal({ friend, onClose, onSave, onDelete }) {
               )}
               {!isNew && (
                 <span className="last-seen">
-                  {hasMeetings
-                    ? `Last seen ${days === 0 ? 'today' : `${days}d ago`} — ${formatDate(last.date)}`
-                    : 'No meetups yet'}
+                  {!hasMeetings && 'No meetups yet'}
+                  {hasMeetings && isUpcoming && `Meeting ${daysLabel(days)} — ${formatDate(featured.date)}`}
+                  {hasMeetings && !isUpcoming && `Last seen ${daysLabel(days)} — ${formatDate(featured.date)}`}
                 </span>
               )}
             </div>
@@ -212,19 +217,39 @@ export default function FriendModal({ friend, onClose, onSave, onDelete }) {
               )}
             </>
           ) : (
-            <>
-              <p className="timeline-label">All meetups</p>
-              <div className="timeline">
-                {sorted.map((m, i) => (
-                  <TimelineEntry
-                    key={i}
-                    meeting={m}
-                    isLast={i === sorted.length - 1}
-                    onReact={(val) => handleReact(i, val)}
-                  />
-                ))}
-              </div>
-            </>
+            <div className="timeline">
+              {futureMeetings.length > 0 && (
+                <>
+                  <p className="timeline-label">Upcoming</p>
+                  {futureMeetings.map((m, i) => (
+                    <TimelineEntry
+                      key={`f-${i}`}
+                      meeting={m}
+                      isLast={false}
+                      onReact={(val) => handleReact(sorted.indexOf(m), val)}
+                    />
+                  ))}
+                </>
+              )}
+              {futureMeetings.length > 0 && pastMeetings.length > 0 && (
+                <div className="timeline-divider">
+                  <div className="timeline-divider-line" />
+                  <span className="timeline-divider-label">Past</span>
+                  <div className="timeline-divider-line" />
+                </div>
+              )}
+              {pastMeetings.length > 0 && futureMeetings.length === 0 && (
+                <p className="timeline-label">Past</p>
+              )}
+              {pastMeetings.map((m, i) => (
+                <TimelineEntry
+                  key={`p-${i}`}
+                  meeting={m}
+                  isLast={i === pastMeetings.length - 1}
+                  onReact={(val) => handleReact(sorted.indexOf(m), val)}
+                />
+              ))}
+            </div>
           )}
         </div>
       </div>

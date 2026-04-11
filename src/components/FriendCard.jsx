@@ -1,12 +1,19 @@
-import { daysSince, formatDate, staleness } from '../utils/dateUtils'
+import { daysSince, formatDate, staleness, daysLabel } from '../utils/dateUtils'
 
 export default function FriendCard({ friend, onClick }) {
-  const sorted = [...friend.meetings].sort((a, b) => new Date(b.date) - new Date(a.date))
-  const last = sorted[0]
-  const hasmeetings = !!last
+  const upcoming = friend.meetings
+    .filter(m => daysSince(m.date) < 0)
+    .sort((a, b) => new Date(a.date) - new Date(b.date))[0] ?? null
 
-  const days = hasmeetings ? daysSince(last.date) : null
-  const status = hasmeetings ? staleness(days) : 'overdue'
+  const lastPast = friend.meetings
+    .filter(m => daysSince(m.date) >= 0)
+    .sort((a, b) => new Date(b.date) - new Date(a.date))[0] ?? null
+
+  const hasMeetings = !!(upcoming || lastPast)
+  const featured = upcoming ?? lastPast
+  const days = featured ? daysSince(featured.date) : null
+  const status = hasMeetings ? staleness(days) : 'overdue'
+  const isUpcoming = !!upcoming
 
   return (
     <div className={`friend-card ${status}`} onClick={onClick}>
@@ -15,17 +22,17 @@ export default function FriendCard({ friend, onClick }) {
         <div className="card-header-info">
           <h2 className="friend-name">{friend.name}</h2>
           <span className="last-seen">
-            {hasmeetings
-              ? `Last seen ${days === 0 ? 'today' : `${days}d ago`}`
-              : 'No meetups yet'}
+            {!hasMeetings && 'No meetups yet'}
+            {hasMeetings && isUpcoming && `Meeting ${daysLabel(days)}`}
+            {hasMeetings && !isUpcoming && `Last seen ${daysLabel(days)}`}
           </span>
         </div>
         <div className={`status-dot ${status}`} />
       </div>
-      {hasmeetings && (
-        <div className="last-activity">
-          <span className="meeting-date">{formatDate(last.date)}</span>
-          <span className="meeting-note">{last.note}</span>
+      {hasMeetings && (
+        <div className={`last-activity ${isUpcoming ? 'upcoming' : ''}`}>
+          <span className="meeting-date">{formatDate(featured.date)}</span>
+          <span className="meeting-note">{featured.note}</span>
         </div>
       )}
     </div>

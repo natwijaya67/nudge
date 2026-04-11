@@ -155,6 +155,10 @@ body {
   margin-left: 5px;
 }
 
+.last-activity.upcoming {
+  border-left-color: #a8d8a8;
+}
+
 .timeline {
   display: flex;
   flex-direction: column;
@@ -318,6 +322,29 @@ body {
   letter-spacing: 0.08em;
   color: #888;
   margin-bottom: 16px;
+}
+
+.timeline-divider {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 4px 0 16px;
+  padding-left: 22px;
+}
+
+.timeline-divider-line {
+  flex: 1;
+  height: 1px;
+  background: #333;
+}
+
+.timeline-divider-label {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #555;
+  flex-shrink: 0;
 }
 
 /* Edit mode */
