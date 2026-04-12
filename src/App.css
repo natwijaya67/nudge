@@ -52,6 +52,11 @@ body {
   margin-top: 4px;
 }
 
+.header-actions {
+  display: flex;
+  gap: 8px;
+}
+
 .add-friend-btn {
   background: #333;
   border: none;
@@ -66,6 +71,24 @@ body {
 }
 
 .add-friend-btn:hover {
+  background: #3a3a42;
+  color: #e0ddd8;
+}
+
+.add-meetup-btn {
+  background: #333;
+  border: none;
+  color: #aaa;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 8px 16px;
+  border-radius: 8px;
+  flex-shrink: 0;
+  transition: background 0.15s, color 0.15s;
+}
+
+.add-meetup-btn:hover {
   background: #3a3a42;
   color: #e0ddd8;
 }
@@ -465,6 +488,26 @@ body {
   min-width: 0;
 }
 
+.notes-input {
+  width: 100%;
+  min-height: 80px;
+  resize: vertical;
+  line-height: 1.5;
+  font-family: inherit;
+  margin-bottom: 4px;
+}
+
+.notes-section {
+  margin-bottom: 24px;
+}
+
+.notes-text {
+  font-size: 14px;
+  color: #bbb;
+  line-height: 1.6;
+  white-space: pre-wrap;
+}
+
 .add-btn {
   background: #333;
   border: none;
@@ -532,6 +575,72 @@ body {
   display: flex;
   gap: 4px;
   flex-shrink: 0;
+}
+
+.friend-select-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.friend-select-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: #2e2e34;
+  border: 1px solid #3a3a42;
+  border-radius: 10px;
+  padding: 10px 14px;
+  cursor: pointer;
+  text-align: left;
+  width: 100%;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.friend-select-item:hover {
+  background: #333340;
+}
+
+.friend-select-item.selected {
+  background: rgba(168, 216, 168, 0.1);
+  border-color: rgba(168, 216, 168, 0.35);
+}
+
+.friend-select-avatar {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: #3a3a42;
+  color: #aaa;
+  font-size: 15px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.friend-select-item.selected .friend-select-avatar {
+  background: rgba(168, 216, 168, 0.2);
+  color: #a8d8a8;
+}
+
+.friend-select-name {
+  flex: 1;
+  font-size: 15px;
+  color: #e0ddd8;
+}
+
+.friend-select-check {
+  font-size: 14px;
+  color: #a8d8a8;
+  width: 16px;
+  text-align: center;
+}
+
+.empty-friends-msg {
+  font-size: 14px;
+  color: #666;
 }
 
 .delete-row {

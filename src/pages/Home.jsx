@@ -2,11 +2,13 @@ import { useState } from 'react'
 import { useFriends, useSelectedFriend } from '../hooks/useFriends'
 import FriendCard from '../components/FriendCard'
 import FriendModal from '../components/FriendModal'
+import AddMeetupModal from '../components/AddMeetupModal'
 
 export default function Home() {
   const { friends, saveFriend, deleteFriend } = useFriends()
   const { selected, setSelected } = useSelectedFriend()
-  const [showAdd, setShowAdd] = useState(false)
+  const [showAddFriend, setShowAddFriend] = useState(false)
+  const [showAddMeetup, setShowAddMeetup] = useState(false)
 
   function handleSave(updated) {
     saveFriend(updated)
@@ -18,6 +20,17 @@ export default function Home() {
     setSelected(null)
   }
 
+  function handleMeetupSave({ date, note, friendIds }) {
+    friendIds.forEach(id => {
+      const friend = friends.find(f => f.id === id)
+      if (!friend) return
+      saveFriend({
+        ...friend,
+        meetings: [...friend.meetings, { date, note }],
+      })
+    })
+  }
+
   return (
     <div className="app">
       <header className="app-header">
@@ -27,7 +40,8 @@ export default function Home() {
             <p>Sorted by who you haven't seen in a while</p>
           </div>
           <div className="header-actions">
-            <button className="add-friend-btn" onClick={() => setShowAdd(true)}>+ Add</button>
+            <button className="add-meetup-btn" onClick={() => setShowAddMeetup(true)}>+ Meetup</button>
+            <button className="add-friend-btn" onClick={() => setShowAddFriend(true)}>+ Friend</button>
           </div>
         </div>
       </header>
@@ -44,11 +58,18 @@ export default function Home() {
           onDelete={handleDelete}
         />
       )}
-      {showAdd && (
+      {showAddFriend && (
         <FriendModal
           friend={null}
-          onClose={() => setShowAdd(false)}
-          onSave={(newFriend) => { saveFriend(newFriend); setShowAdd(false) }}
+          onClose={() => setShowAddFriend(false)}
+          onSave={(newFriend) => { saveFriend(newFriend); setShowAddFriend(false) }}
+        />
+      )}
+      {showAddMeetup && (
+        <AddMeetupModal
+          friends={friends}
+          onSave={handleMeetupSave}
+          onClose={() => setShowAddMeetup(false)}
         />
       )}
     </div>

@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { daysSince, formatDate, staleness, daysLabel } from '../utils/dateUtils'
 import TimelineEntry from './TimelineEntry'
 
-const EMPTY_DRAFT = { name: '', meetings: [], newDate: '', newNote: '' }
+const EMPTY_DRAFT = { name: '', notes: '', meetings: [], newDate: '', newNote: '' }
 
 export default function FriendModal({ friend, onClose, onSave, onDelete }) {
   const isNew = !friend
@@ -10,7 +10,7 @@ export default function FriendModal({ friend, onClose, onSave, onDelete }) {
   const [isEditing, setIsEditing] = useState(isNew)
   const [confirmDelete, setConfirmDelete] = useState(false)
   const [draft, setDraft] = useState(() =>
-    isNew ? EMPTY_DRAFT : { name: friend.name, meetings: [...friend.meetings], newDate: '', newNote: '' }
+    isNew ? EMPTY_DRAFT : { name: friend.name, notes: friend.notes ?? '', meetings: [...friend.meetings], newDate: '', newNote: '' }
   )
 
   // All sorted newest first: future (furthest→soonest), then past (most recent→oldest)
@@ -38,7 +38,7 @@ export default function FriendModal({ friend, onClose, onSave, onDelete }) {
   }, [isEditing, isNew, onClose])
 
   function startEdit() {
-    setDraft({ name: friend.name, meetings: sorted.map(m => ({ ...m })), newDate: '', newNote: '' })
+    setDraft({ name: friend.name, notes: friend.notes ?? '', meetings: sorted.map(m => ({ ...m })), newDate: '', newNote: '' })
     setIsEditing(true)
   }
 
@@ -51,7 +51,7 @@ export default function FriendModal({ friend, onClose, onSave, onDelete }) {
   function saveEdit() {
     if (!draft.name.trim()) return
     const meetings = draft.meetings.filter(m => m.date && m.note)
-    onSave({ ...(friend ?? { id: Date.now() }), name: draft.name.trim(), meetings })
+    onSave({ ...(friend ?? { id: Date.now() }), name: draft.name.trim(), notes: draft.notes, meetings })
     if (!isNew) {
       setIsEditing(false)
       setDraft(null)
@@ -136,7 +136,15 @@ export default function FriendModal({ friend, onClose, onSave, onDelete }) {
         <div className="modal-body">
           {isEditing ? (
             <>
-              <p className="timeline-label">Add meetup</p>
+              <p className="timeline-label">Notes</p>
+              <textarea
+                className="edit-input notes-input"
+                placeholder="How you met, things to remember, shared interests…"
+                value={draft.notes}
+                onChange={e => setDraft(prev => ({ ...prev, notes: e.target.value }))}
+              />
+
+              <p className="timeline-label" style={{ marginTop: 24 }}>Add meetup</p>
               <div className="add-meeting">
                 <input
                   type="date"
@@ -217,6 +225,13 @@ export default function FriendModal({ friend, onClose, onSave, onDelete }) {
               )}
             </>
           ) : (
+            <div>
+              {friend.notes && (
+                <div className="notes-section">
+                  <p className="timeline-label">Notes</p>
+                  <p className="notes-text">{friend.notes}</p>
+                </div>
+              )}
             <div className="timeline">
               {futureMeetings.length > 0 && (
                 <>
@@ -249,6 +264,7 @@ export default function FriendModal({ friend, onClose, onSave, onDelete }) {
                   onReact={(val) => handleReact(sorted.indexOf(m), val)}
                 />
               ))}
+            </div>
             </div>
           )}
         </div>
