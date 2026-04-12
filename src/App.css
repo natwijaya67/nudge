@@ -444,6 +444,7 @@ body {
   padding: 4px 8px;
   width: 100%;
   outline: none;
+  -webkit-text-size-adjust: 100%;
 }
 
 .edit-name-input:focus {
@@ -468,7 +469,7 @@ body {
   border: 1px solid #3a3a42;
   border-radius: 6px;
   color: #e0ddd8;
-  font-size: 13px;
+  font-size: 16px;
   padding: 6px 8px;
   outline: none;
   transition: border-color 0.15s;
