@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { daysSince, formatDate, staleness, daysLabel } from '../utils/dateUtils'
 import TimelineEntry from './TimelineEntry'
 
-const EMPTY_DRAFT = { name: '', notes: '', meetings: [], newDate: '', newNote: '' }
+const EMPTY_DRAFT = { name: '', phone: '', notes: '', meetings: [], newDate: '', newNote: '' }
 
 export default function FriendModal({ friend, onClose, onSave, onDelete }) {
   const isNew = !friend
@@ -10,7 +10,7 @@ export default function FriendModal({ friend, onClose, onSave, onDelete }) {
   const [isEditing, setIsEditing] = useState(isNew)
   const [confirmDelete, setConfirmDelete] = useState(false)
   const [draft, setDraft] = useState(() =>
-    isNew ? EMPTY_DRAFT : { name: friend.name, notes: friend.notes ?? '', meetings: [...friend.meetings], newDate: '', newNote: '' }
+    isNew ? EMPTY_DRAFT : { name: friend.name, phone: friend.phone ?? '', notes: friend.notes ?? '', meetings: [...friend.meetings], newDate: '', newNote: '' }
   )
 
   // All sorted newest first: future (furthest→soonest), then past (most recent→oldest)
@@ -38,7 +38,7 @@ export default function FriendModal({ friend, onClose, onSave, onDelete }) {
   }, [isEditing, isNew, onClose])
 
   function startEdit() {
-    setDraft({ name: friend.name, notes: friend.notes ?? '', meetings: sorted.map(m => ({ ...m })), newDate: '', newNote: '' })
+    setDraft({ name: friend.name, phone: friend.phone ?? '', notes: friend.notes ?? '', meetings: sorted.map(m => ({ ...m })), newDate: '', newNote: '' })
     setIsEditing(true)
   }
 
@@ -51,7 +51,7 @@ export default function FriendModal({ friend, onClose, onSave, onDelete }) {
   function saveEdit() {
     if (!draft.name.trim()) return
     const meetings = draft.meetings.filter(m => m.date && m.note)
-    onSave({ ...(friend ?? { id: Date.now() }), name: draft.name.trim(), notes: draft.notes, meetings })
+    onSave({ ...(friend ?? { id: Date.now() }), name: draft.name.trim(), phone: draft.phone.trim(), notes: draft.notes, meetings })
     if (!isNew) {
       setIsEditing(false)
       setDraft(null)
@@ -112,22 +112,41 @@ export default function FriendModal({ friend, onClose, onSave, onDelete }) {
             <div className="avatar large">{avatarLetter}</div>
             <div className="card-header-info">
               {isEditing ? (
-                <input
-                  className="edit-name-input"
-                  value={draft.name}
-                  onChange={e => setDraft(prev => ({ ...prev, name: e.target.value }))}
-                  placeholder="Friend's name"
-                  autoFocus={isNew}
-                />
+                <>
+                  <input
+                    className="edit-name-input"
+                    value={draft.name}
+                    onChange={e => setDraft(prev => ({ ...prev, name: e.target.value }))}
+                    placeholder="Friend's name"
+                    autoFocus={isNew}
+                  />
+                  <input
+                    className="edit-input edit-phone-input"
+                    type="tel"
+                    value={draft.phone}
+                    onChange={e => setDraft(prev => ({ ...prev, phone: e.target.value }))}
+                    placeholder="Phone number (optional)"
+                  />
+                </>
               ) : (
-                <h2 className="friend-name">{friend.name}</h2>
-              )}
-              {!isNew && (
-                <span className="last-seen">
-                  {!hasMeetings && 'No meetups yet'}
-                  {hasMeetings && isUpcoming && `Meeting ${daysLabel(days)} — ${formatDate(featured.date)}`}
-                  {hasMeetings && !isUpcoming && `Last seen ${daysLabel(days)} — ${formatDate(featured.date)}`}
-                </span>
+                <>
+                  <h2 className="friend-name">{friend.name}</h2>
+                  <div className="friend-meta">
+                    {!isNew && (
+                      <span className="last-seen">
+                        {!hasMeetings && 'No meetups yet'}
+                        {hasMeetings && isUpcoming && `Meeting ${daysLabel(days)} — ${formatDate(featured.date)}`}
+                        {hasMeetings && !isUpcoming && `Last seen ${daysLabel(days)} — ${formatDate(featured.date)}`}
+                      </span>
+                    )}
+                    {friend.phone && (
+                      <>
+                        <a className="message-btn" href={`sms:${friend.phone}`}>iMessage</a>
+                        <a className="message-btn whatsapp" href={`https://wa.me/${friend.phone.replace(/\D/g, '')}`} target="_blank" rel="noreferrer">WhatsApp</a>
+                      </>
+                    )}
+                  </div>
+                </>
               )}
             </div>
           </div>
