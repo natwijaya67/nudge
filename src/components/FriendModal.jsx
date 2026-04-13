@@ -126,6 +126,7 @@ export default function FriendModal({ friend, onClose, onSave, onDelete }) {
                     className="edit-input edit-phone-input"
                     type="text"
                     inputMode="tel"
+                    autoComplete="tel"
                     value={draft.phone}
                     onChange={e => setDraft(prev => ({ ...prev, phone: e.target.value }))}
                     placeholder="+1 234 567 8900"
