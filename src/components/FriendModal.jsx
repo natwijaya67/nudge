@@ -143,10 +143,10 @@ export default function FriendModal({ friend, onClose, onSave, onDelete }) {
                   {friend.phone && (
                     <div className="contact-btns">
                       <a className="message-btn" href={`sms:${friend.phone}`} title="iMessage">
-                        <BsFillChatFill size={14} /> iMessage
+                        <BsFillChatFill size={14} />
                       </a>
                       <a className="message-btn whatsapp" href={`https://wa.me/${friend.phone.replace(/\D/g, '')}`} target="_blank" rel="noreferrer" title="WhatsApp">
-                        <SiWhatsapp size={14} /> WhatsApp
+                        <SiWhatsapp size={14} />
                       </a>
                     </div>
                   )}

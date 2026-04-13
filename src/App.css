@@ -167,17 +167,14 @@ body {
 .message-btn {
   display: flex;
   align-items: center;
-  gap: 6px;
-  font-size: 13px;
-  font-weight: 500;
+  justify-content: center;
   color: #a8d8a8;
   background: rgba(168, 216, 168, 0.12);
   border: 1px solid rgba(168, 216, 168, 0.25);
-  border-radius: 6px;
-  padding: 5px 12px;
+  border-radius: 8px;
+  padding: 7px 10px;
   text-decoration: none;
   transition: background 0.15s;
-  white-space: nowrap;
 }
 
 .message-btn:hover {
