@@ -1,4 +1,6 @@
 import { useEffect, useState } from 'react'
+import { BsFillChatFill } from 'react-icons/bs'
+import { SiWhatsapp } from 'react-icons/si'
 import { daysSince, formatDate, staleness, daysLabel } from '../utils/dateUtils'
 import TimelineEntry from './TimelineEntry'
 
@@ -131,21 +133,23 @@ export default function FriendModal({ friend, onClose, onSave, onDelete }) {
               ) : (
                 <>
                   <h2 className="friend-name">{friend.name}</h2>
-                  <div className="friend-meta">
-                    {!isNew && (
-                      <span className="last-seen">
-                        {!hasMeetings && 'No meetups yet'}
-                        {hasMeetings && isUpcoming && `Meeting ${daysLabel(days)} — ${formatDate(featured.date)}`}
-                        {hasMeetings && !isUpcoming && `Last seen ${daysLabel(days)} — ${formatDate(featured.date)}`}
-                      </span>
-                    )}
-                    {friend.phone && (
-                      <>
-                        <a className="message-btn" href={`sms:${friend.phone}`}>iMessage</a>
-                        <a className="message-btn whatsapp" href={`https://wa.me/${friend.phone.replace(/\D/g, '')}`} target="_blank" rel="noreferrer">WhatsApp</a>
-                      </>
-                    )}
-                  </div>
+                  {!isNew && (
+                    <span className="last-seen">
+                      {!hasMeetings && 'No meetups yet'}
+                      {hasMeetings && isUpcoming && `Meeting ${daysLabel(days)} — ${formatDate(featured.date)}`}
+                      {hasMeetings && !isUpcoming && `Last seen ${daysLabel(days)} — ${formatDate(featured.date)}`}
+                    </span>
+                  )}
+                  {friend.phone && (
+                    <div className="contact-btns">
+                      <a className="message-btn" href={`sms:${friend.phone}`} title="iMessage">
+                        <BsFillChatFill size={14} /> iMessage
+                      </a>
+                      <a className="message-btn whatsapp" href={`https://wa.me/${friend.phone.replace(/\D/g, '')}`} target="_blank" rel="noreferrer" title="WhatsApp">
+                        <SiWhatsapp size={14} /> WhatsApp
+                      </a>
+                    </div>
+                  )}
                 </>
               )}
             </div>
