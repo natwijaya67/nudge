@@ -124,10 +124,11 @@ export default function FriendModal({ friend, onClose, onSave, onDelete }) {
                   />
                   <input
                     className="edit-input edit-phone-input"
-                    type="tel"
+                    type="text"
+                    inputMode="tel"
                     value={draft.phone}
                     onChange={e => setDraft(prev => ({ ...prev, phone: e.target.value }))}
-                    placeholder="Phone number (optional)"
+                    placeholder="+1 234 567 8900"
                   />
                 </>
               ) : (
@@ -142,10 +143,10 @@ export default function FriendModal({ friend, onClose, onSave, onDelete }) {
                   )}
                   {friend.phone && (
                     <div className="contact-btns">
-                      <a className="message-btn" href={`sms:${friend.phone}`} title="iMessage">
+                      <a className="message-btn" href={`sms:${friend.phone.replace(/\s/g, '')}`} title="iMessage">
                         <BsFillChatFill size={14} />
                       </a>
-                      <a className="message-btn whatsapp" href={`https://wa.me/${friend.phone.replace(/\D/g, '')}`} target="_blank" rel="noreferrer" title="WhatsApp">
+                      <a className="message-btn" href={`https://wa.me/${friend.phone.replace(/[^\d+]/g, '').replace(/^\+/, '')}`} target="_blank" rel="noreferrer" title="WhatsApp">
                         <SiWhatsapp size={14} />
                       </a>
                     </div>
