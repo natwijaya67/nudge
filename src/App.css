@@ -608,6 +608,80 @@ body {
   flex-shrink: 0;
 }
 
+.onboarding-modal {
+  max-width: 360px;
+}
+
+.onboarding-body {
+  padding: 28px 24px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.onboarding-title {
+  font-size: 22px;
+  font-weight: 700;
+  color: #f0ede8;
+}
+
+.onboarding-subtitle {
+  font-size: 14px;
+  color: #999;
+  margin-top: -12px;
+}
+
+.onboarding-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.onboarding-step {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+}
+
+.step-num {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: #333;
+  color: #aaa;
+  font-size: 13px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.onboarding-step strong {
+  display: block;
+  font-size: 14px;
+  color: #e0ddd8;
+  margin-bottom: 2px;
+}
+
+.onboarding-step p {
+  font-size: 13px;
+  color: #888;
+  line-height: 1.5;
+}
+
+.onboarding-step em {
+  font-style: normal;
+  color: #bbb;
+}
+
+.onboarding-btn {
+  width: 100%;
+  padding: 11px;
+  font-size: 15px;
+}
+
 .friend-select-list {
   display: flex;
   flex-direction: column;

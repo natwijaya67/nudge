@@ -3,12 +3,14 @@ import { useFriends, useSelectedFriend } from '../hooks/useFriends'
 import FriendCard from '../components/FriendCard'
 import FriendModal from '../components/FriendModal'
 import AddMeetupModal from '../components/AddMeetupModal'
+import OnboardingModal from '../components/OnboardingModal'
 
 export default function Home() {
   const { friends, saveFriend, deleteFriend } = useFriends()
   const { selected, setSelected } = useSelectedFriend()
   const [showAddFriend, setShowAddFriend] = useState(false)
   const [showAddMeetup, setShowAddMeetup] = useState(false)
+  const [showOnboarding, setShowOnboarding] = useState(() => friends.length === 0)
 
   function handleSave(updated) {
     saveFriend(updated)
@@ -71,6 +73,9 @@ export default function Home() {
           onSave={handleMeetupSave}
           onClose={() => setShowAddMeetup(false)}
         />
+      )}
+      {showOnboarding && (
+        <OnboardingModal onClose={() => setShowOnboarding(false)} />
       )}
     </div>
   )
