@@ -364,6 +364,7 @@ body {
 .modal-body {
   overflow-y: auto;
   padding: 20px;
+  text-align: left;
 }
 
 .timeline-label {
@@ -532,11 +533,18 @@ body {
   border-bottom: 1px solid #2e2e34;
 }
 
+.empty-meetings-msg {
+  font-size: 14px;
+  color: #666;
+  line-height: 1.6;
+}
+
 .notes-text {
   font-size: 14px;
   color: #bbb;
   line-height: 1.6;
   white-space: pre-wrap;
+  text-align: left;
 }
 
 .add-btn {
