@@ -478,6 +478,7 @@ body {
   font-weight: 600;
   padding: 4px 8px;
   width: 100%;
+  box-sizing: border-box;
   outline: none;
   -webkit-text-size-adjust: 100%;
 }
@@ -508,6 +509,8 @@ body {
   padding: 6px 8px;
   outline: none;
   transition: border-color 0.15s;
+  box-sizing: border-box;
+  max-width: 100%;
 }
 
 .edit-input:focus {
