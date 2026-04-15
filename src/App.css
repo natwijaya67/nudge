@@ -210,6 +210,11 @@ body {
   border-left-color: #a8d8a8;
 }
 
+.timeline-scroll {
+  max-height: 210px;
+  overflow-y: auto;
+}
+
 .timeline {
   display: flex;
   flex-direction: column;
@@ -363,6 +368,7 @@ body {
 
 .modal-body {
   overflow-y: auto;
+  overflow-x: hidden;
   padding: 20px;
   text-align: left;
 }

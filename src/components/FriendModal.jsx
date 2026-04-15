@@ -262,34 +262,36 @@ export default function FriendModal({ friend, onClose, onSave, onDelete }) {
               {!hasMeetings ? (
                 <p className="empty-meetings-msg">You haven't logged any meetups with {friend.name} yet. Time to hang out?</p>
               ) : (
-                <div className="timeline">
-                  {futureMeetings.length > 0 && (
-                    <>
-                      <p className="timeline-label">Upcoming</p>
-                      {futureMeetings.map((m, i) => (
-                        <TimelineEntry
-                          key={`f-${i}`}
-                          meeting={m}
-                          isLast={false}
-                          onReact={(val) => handleReact(sorted.indexOf(m), val)}
-                        />
-                      ))}
-                    </>
-                  )}
-                  {futureMeetings.length > 0 && pastMeetings.length > 0 && (
-                    <div className="timeline-divider">
-                      <div className="timeline-divider-line" />
-                      <div className="timeline-divider-line" />
-                    </div>
-                  )}
-                  {pastMeetings.map((m, i) => (
-                    <TimelineEntry
-                      key={`p-${i}`}
-                      meeting={m}
-                      isLast={i === pastMeetings.length - 1}
-                      onReact={(val) => handleReact(sorted.indexOf(m), val)}
-                    />
-                  ))}
+                <div className="timeline-scroll">
+                  <div className="timeline">
+                    {futureMeetings.length > 0 && (
+                      <>
+                        <p className="timeline-label">Upcoming</p>
+                        {futureMeetings.map((m, i) => (
+                          <TimelineEntry
+                            key={`f-${i}`}
+                            meeting={m}
+                            isLast={false}
+                            onReact={(val) => handleReact(sorted.indexOf(m), val)}
+                          />
+                        ))}
+                      </>
+                    )}
+                    {futureMeetings.length > 0 && pastMeetings.length > 0 && (
+                      <div className="timeline-divider">
+                        <div className="timeline-divider-line" />
+                        <div className="timeline-divider-line" />
+                      </div>
+                    )}
+                    {pastMeetings.map((m, i) => (
+                      <TimelineEntry
+                        key={`p-${i}`}
+                        meeting={m}
+                        isLast={i === pastMeetings.length - 1}
+                        onReact={(val) => handleReact(sorted.indexOf(m), val)}
+                      />
+                    ))}
+                  </div>
                 </div>
               )}
             </div>
